@@ -1,20 +1,21 @@
-from chalice import Chalice
+from chalice import Chalice, BadRequestError
+import boto3
 
-app = Chalice(app_name='bad-dynamo-search')
+app = Chalice(app_name='dvfaas-bad-dynamo-search')
 
-@app.route('/bad_dynamo_search', methods=['POST'], content_types=['application/json'], cors = True)
+@app.route('/search', methods=['POST'], content_types=['application/json'], cors = True)
 def bad_search():
     try:
         jbody = app.current_request.json_body
         if isinstance(jbody, dict):
-            if jbody.has_key('db') and jbody.has_key('search_term') and jbody.has_key(
-                    'search_operator') and jbody.has_key('search_field'):
+            if 'db' in jbody and 'search_term' in jbody and 'search_operator' in jbody \
+                    and 'search_field' in jbody:
                 db = boto3.client('dynamodb')
                 response = db.scan(TableName=jbody['db'], Select='ALL_ATTRIBUTES', ScanFilter={
                     jbody['search_field']: {"AttributeValueList": [{"S": jbody['search_term']}],
                                             "ComparisonOperator": jbody['search_operator']}
                 })
-                if response.has_key('Items'):
+                if 'Items' in response:
                     return {"search_results": response['Items']}
                 else:
                     return {"search_results": None}
@@ -23,4 +24,4 @@ def bad_search():
         else:
             return BadRequestError("Seems to be a wrong content type")
     except Exception as e:
-        return BadRequestError(e.message)
+        return {"error": str(e)}

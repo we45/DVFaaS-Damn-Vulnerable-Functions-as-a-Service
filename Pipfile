@@ -4,9 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [dev-packages]
+faker = "*"
+huepy = "*"
+ipython = "*"
 
 [packages]
 mysqlclient = "*"
+pyyaml = "*"
 
 [requires]
 python_version = "3.6"

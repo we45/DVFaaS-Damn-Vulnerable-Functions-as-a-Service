@@ -1,0 +1,17 @@
+{
+  "version": "2.0",
+  "app_name": "bad-dynamo-search",
+  "stages": {
+    "dev": {
+      "api_gateway_stage": "api",
+      "manage_iam_role": false,
+      "iam_role_arn": "arn:aws:iam::358174707935:role/2htw3dwxnc_bad_dynamodb_policy",
+      "environment_variables": {
+        "TRAINING_BUCKET": "2htw3dwxnc-training-cv-uploader",
+        "USER_TABLE": "2htw3dwxnc_cv_users",
+        "CV_TABLE": "2htw3dwxnc_cv_data",
+        "PCI_TABLE": "2htw3dwxnc-payment-cards"
+      }
+    }
+  }
+}

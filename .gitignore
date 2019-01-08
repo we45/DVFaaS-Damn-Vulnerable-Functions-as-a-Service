@@ -13,3 +13,12 @@ injection/mqtt_rds_sql_event_injection/ops/.terraform/plugins/darwin_amd64/terra
 injection/mqtt_rds_sql_event_injection/ops/.terraform/plugins/darwin_amd64/terraform-provider-local_v1.1.0_x4
 injection/mqtt_rds_sql_event_injection/ops/.terraform/plugins/darwin_amd64/terraform-provider-random_v2.0.0_x4
 injection/mqtt_rds_sql_event_injection/ops/cryptocurrency_list.json
+iam_privilege_escalation/ops/.terraform/plugins/darwin_amd64/lock.json
+iam_privilege_escalation/ops/.terraform/plugins/darwin_amd64/terraform-provider-aws_v1.54.0_x4
+iam_privilege_escalation/ops/.terraform/plugins/darwin_amd64/terraform-provider-local_v1.1.0_x4
+iam_privilege_escalation/ops/.terraform/plugins/darwin_amd64/terraform-provider-random_v2.0.0_x4
+iam_privilege_escalation/ops/.terraform/plugins/darwin_amd64/terraform-provider-template_v1.0.0_x4
+iam_privilege_escalation/bad-dynamo-search/.chalice/deployed/dev.json
+injection/mqtt_rds_sql_event_injection/read_file.py
+insecure_deserialization/insecure-deserialization/.chalice/config.json
+insecure_deserialization/insecure-deserialization/.chalice/deployed/dev.json
