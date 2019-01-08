@@ -20,5 +20,5 @@ iam_privilege_escalation/ops/.terraform/plugins/darwin_amd64/terraform-provider-
 iam_privilege_escalation/ops/.terraform/plugins/darwin_amd64/terraform-provider-template_v1.0.0_x4
 iam_privilege_escalation/bad-dynamo-search/.chalice/deployed/dev.json
 injection/mqtt_rds_sql_event_injection/read_file.py
-insecure_deserialization/insecure-deserialization/.chalice/config.json
 insecure_deserialization/insecure-deserialization/.chalice/deployed/dev.json
+xxe/xxe-example/.chalice/deployed/dev.json

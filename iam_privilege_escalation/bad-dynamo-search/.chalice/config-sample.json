@@ -1,0 +1,17 @@
+{
+  "version": "2.0",
+  "app_name": "dvfaas-bad-dynamo-search",
+  "stages": {
+    "dev": {
+      "api_gateway_stage": "api",
+      "manage_iam_role": false,
+      "iam_role_arn": "<ARN of some role policy>",
+      "environment_variables": {
+        "TRAINING_BUCKET": "<S3 bucket Name>",
+        "USER_TABLE": "<DynamoDB User Table>",
+        "CV_TABLE": "<DynamoDB Data Table>",
+        "PCI_TABLE": "<DynamoDB Payment Card Table>"
+      }
+    }
+  }
+}

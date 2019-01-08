@@ -3,7 +3,7 @@ import yaml
 from io import BytesIO
 import cgi
 
-app = Chalice(app_name='insecure-deserialization')
+app = Chalice(app_name='dvfaas-insecure-deserialization')
 
 
 def _get_parts():

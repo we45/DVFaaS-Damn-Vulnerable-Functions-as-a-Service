@@ -9,14 +9,14 @@ import cgi
 from uuid import uuid4
 from xml.dom.pulldom import START_ELEMENT, parse, parseString
 from os import environ
+import hashlib
 
-app = Chalice(app_name='xxe-example')
+app = Chalice(app_name='dvfaas-xxe')
 dynamo = boto3.resource('dynamodb')
-HMAC_PASSWORD = environ['HMAC_PASSWORD']
-HMAC_PASSWORD_2 = environ['HMAC_PASSWORD_2']
-CV_TBL = environ['CV_DATABASE_TABLE']
-CV_BUCKET = environ['CV_BUCKET']
-CV_USR_TBL = environ['CV_USER_TABLE']
+HMAC_PASSWORD_2 = 'super-secret-value'
+CV_TBL = environ['CV_TABLE']
+CV_BUCKET = environ['TRAINING_BUCKET']
+CV_USR_TBL = environ['USER_TABLE']
 
 
 def get_user_for_event(event_key):
@@ -24,7 +24,7 @@ def get_user_for_event(event_key):
         print(event_key)
         table = dynamo.Table(CV_TBL)
         resp = table.get_item(Key={'filename': event_key})
-        if resp.has_key('Item'):
+        if 'Item' in resp:
             print(resp['Item'])
             return resp['Item']['email']
     except Exception as e:
@@ -43,16 +43,17 @@ def cv_event_handler(event):
         if email:
             docfile = s3.Object(CV_BUCKET, file_name)
             docbody = docfile.get()['Body'].read()
-            doc = parseString(docbody)
+            doc = parseString(docbody.decode('utf-8'))
             content = ''
             for event, node in doc:
                 doc.expandNode(node)
                 content = node.toxml()
             try:
+                print("content", content)
                 cv_table = dynamo.Table(CV_TBL)
                 response = cv_table.get_item(Key={'filename': file_name})
                 item = response['Item']
-                item['file_content'] = b64encode(content)
+                item['file_content'] = b64encode(content.encode()).decode('utf-8')
                 cv_table.put_item(Item=item)
                 app.log.debug(response)
             except Exception as e:
@@ -66,11 +67,11 @@ def cv_event_handler(event):
 
 
 def is_valid_jwt(token):
-    if token.has_key('username'):
+    if 'username' in token:
         table = dynamo.Table(CV_USR_TBL)
         resp = table.scan(Select='ALL_ATTRIBUTES', FilterExpression=Attr('username').eq(token.get('username')))
         print(resp)
-        if resp.has_key('Items'):
+        if 'Items' in resp:
             return resp['Items']
         else:
             raise Exception("Unable to verify user role")
@@ -78,36 +79,55 @@ def is_valid_jwt(token):
         raise Exception("Token doesnt have required value")
 
 
-@app.route('/protected', methods=['GET'], cors = True)
-def protected_view():
+@app.route('/signup', methods = ['POST'], content_types=['application/json'], cors = True)
+def signup_user():
     try:
-        hello = dict(app.current_request.headers)
-        if hello.has_key('authorization'):
-            token = hello.get('authorization')
-            if token == 'admin' or token == 'staff':
-                return {'success': 'you are an administrator'}
-            elif token == 'user':
-                return {'less-success': 'You are just a user'}
-            else:
-                return BadRequestError('Unrecognized')
+        jbody = app.current_request.json_body
+        mandatory_attrs = ('email', 'username', 'password', 'first_name', 'last_name')
+        if all(k in jbody for k in mandatory_attrs):
+            table = dynamo.Table(CV_USR_TBL)
+            jbody['password'] = hashlib.md5(jbody['password'].encode()).hexdigest()
+            table.put_item(Item = jbody)
+            return {"success": jbody}
         else:
-            return UnauthorizedError("No Authorization Token")
+            return BadRequestError("Mandatory fields have not been provided")
     except Exception as e:
-        return BadRequestError(e)
+        return BadRequestError(str(e))
+
+@app.route('/login', methods = ['POST'], content_types=['application/json'], cors = True)
+def login():
+    try:
+        jbody = app.current_request.json_body
+        if 'email' in jbody and 'password' in jbody:
+            table = dynamo.Table(CV_USR_TBL)
+            response = table.get_item(Key = {'email': jbody['email']})
+            if 'Item' in response:
+                if response['Item']['password'] == hashlib.md5(jbody['password'].encode()).hexdigest():
+                    token = jwt.encode({'email': response['Item']['email'], 'username': response['Item']['username']},
+                                       HMAC_PASSWORD_2, algorithm='HS256')
+                    return {"token": token.decode('utf-8')}
+                else:
+                    return UnauthorizedError("Invalid Credentials")
+            else:
+                return UnauthorizedError("Invalid Credentials")
+        else:
+            return BadRequestError("Inaccessible Fields")
+    except Exception as e:
+        return BadRequestError(str(e))
 
 
 @app.route('/delete_user/{email}', methods=['DELETE'], cors = True)
 def delete_user(email):
     try:
         hello = dict(app.current_request.headers)
-        if hello.has_key('authorization'):
+        if 'authorization' in hello:
             token = hello.get('authorization')
             if token == 'admin' or token == 'staff':
                 table = dynamo.Table(CV_USR_TBL)
                 resp = table.delete_item(Key={
                     'email': email
                 })
-                if resp.has_key('Error'):
+                if 'Error' in resp:
                     return BadRequestError("Unable to delete ")
                 else:
                     return {'success': 'User with email: {} deleted'.format(email)}
@@ -132,8 +152,7 @@ def _get_parts():
 def upload():
     try:
         hello = dict(app.current_request.headers)
-        print(hello['authorization'])
-        if hello.has_key('authorization'):
+        if 'authorization' in hello:
             decoded = jwt.decode(str(hello['authorization']), HMAC_PASSWORD_2, algorithms=['HS256'])
             print("decoded", decoded)
             details = is_valid_jwt(decoded)

@@ -67,6 +67,17 @@ mysql> CREATE TABLE sensor_temperature(id int NOT NULL AUTO_INCREMENT, sensor_na
 Query OK, 0 rows affected (0.60 sec)
 ```
 
+* Generate a SNS Topic with `aws sns create-topic --name my-topic`
+
+    ```
+    {
+        "ResponseMetadata": {
+            "RequestId": "1469e8d7-1642-564e-b85d-a19b4b341f83"
+        },
+        "TopicArn": "arn:aws:sns:us-west-2:0123456789012:my-topic"
+    }
+    ```
+
 ### Setup - Lambda Function
 * Goto `mqtt_rds_sql_event_injection\sqli\.chalice`
 * Edit `config.json` to include the following:
@@ -77,6 +88,7 @@ Query OK, 0 rows affected (0.60 sec)
         "DB_USER": "test",
         "DB_PASS": "test123",
         "DB_DB": "sensordb"
+        "SNS_TOPIC": "<topic ARN>"
 }
 ```
 This will inject the required ENVVARs into the Lambda function at runtime

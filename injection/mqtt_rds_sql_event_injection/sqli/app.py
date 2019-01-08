@@ -4,7 +4,7 @@ from random import uniform
 from json import loads
 import pymysql.cursors
 
-app = Chalice(app_name='sqli')
+app = Chalice(app_name='dvfaas-event-injection-sqli')
 
 db = pymysql.connect(
     host = environ['DB_HOST'],
