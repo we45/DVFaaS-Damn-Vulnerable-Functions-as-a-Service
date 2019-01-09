@@ -2,6 +2,8 @@
 
 > A DHIY (Deploy and Hack It Yourself) Project that you can deploy and run a bunch of 'orribly insecure functions on AWS Lambda
 
+![DVFaas-Logo](img/logo.jpg)
+
 ### Objective and Audiences
 
 * We at we45 do a lot of training around Serverless Security, Cloud and security of modern web stacks.
