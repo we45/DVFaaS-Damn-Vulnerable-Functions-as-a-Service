@@ -31,6 +31,7 @@ This project is not for you, if:
 * PyYAML
 * HTTPie
 * AWS CLI with root or high privileges required for deployment/setup of various AWS components
+* jq
 
 #### AWS Resources
 * RDS => MySQL (Free Tier eligible)
