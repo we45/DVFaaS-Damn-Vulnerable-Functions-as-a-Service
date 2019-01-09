@@ -8,7 +8,8 @@
         "DB_HOST": "<RDS HOST URL>",
         "DB_USER": "<dbuser>",
         "DB_PASS": "<dbpass>",
-        "DB_DB": "<database name>"
+        "DB_DB": "<database name>",
+        "SNS_TOPIC": "<some topic>"
       }
     }
   }

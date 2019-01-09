@@ -5,6 +5,7 @@ from json import loads
 import pymysql.cursors
 
 app = Chalice(app_name='dvfaas-event-injection-sqli')
+topic_arn = environ['SNS_TOPIC']
 
 db = pymysql.connect(
     host = environ['DB_HOST'],
@@ -26,7 +27,7 @@ def index():
         print(e)
         return {"error": e.__str__()}
 
-@app.on_sns_message(topic="sensor_channel")
+@app.on_sns_message(topic=topic_arn)
 def sensor_react(event):
     try:
         event_dict = loads(event.message)

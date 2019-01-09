@@ -1,8 +1,14 @@
 # DVFaaS - Damn Vulnerable Functions as a Service
 
-> A Project that you can deploy and run a bunch of 'orribly insecure functions on AWS Lambda
+> A DHIY (Deploy and Hack It Yourself) Project that you can deploy and run a bunch of 'orribly insecure functions on AWS Lambda
 
 ### Objective and Audiences
+
+* We at we45 do a lot of training around Serverless Security, Cloud and security of modern web stacks.
+* We strongly believe that there's a great need for developers, architects, DevOps and Security Personnel to learn and understand about the risks with these modern components
+* This project is a culmination of our training efforts in developing intentionally vulnerable Serverless apps (FaaS) that we have decided to open out to the community at large
+
+
 This project is great for you, if:
 * You want to learn about security flaws with serverless apps, specifically FaaS implementations.
 
@@ -23,6 +29,8 @@ This project is not for you, if:
 * Pipenv (dependency management)
 * Chalice
 * PyYAML
+* HTTPie
+* AWS CLI with root or high privileges required for deployment/setup of various AWS components
 
 #### AWS Resources
 * RDS => MySQL (Free Tier eligible)
@@ -30,6 +38,22 @@ This project is not for you, if:
 * Amazon SNS (Pub/Sub for Topics)
 * Amazon Lambda, y'know....for functions
 * Amazon Cloudwatch Logs
+
+
+## Installation and Setup
+* Git clone the project `git clone <URL>`
+* We are using pipenv to manage dependencies for the project. You can use `pipenv install` to install all deps
+* Each lab has its own deployment specification. In most cases, there's a specific deployment directory in each lab called `ops`
+which is used to manage deployments
+* We highly recommend using `httpie` as the http client as its command line and really easy to use
+* For some deployments, we are using Terraform to perform deployments and setup AWS IAM Roles and so on.
+    * Please note that you'll need to have high/root privileges on AWS with aws cli for all this to work.
+* Currently, for all exercises we are using Chalice (a AWS Lambda framework in Python).
+    * All labs have a `.chalice` folder that is recognized by chalice for the purposes of deployment.
+    * For most of the labs, you'll have to configure the `.chalice/config.json` file to configure the deployment. Please read each lab's README for this info.
+    This will have to be done, post deployment (which is the `ops` directories where applicable)
+    * Once done, deployment is reasonably easy to do, with a simple `chalice deploy` command which will push your Lambda function to your AWS account:
+        * Please note that you'll need to have high/root privileges on AWS with aws cli for all this to work.
 
 
 

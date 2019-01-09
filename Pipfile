@@ -6,7 +6,8 @@ name = "pypi"
 [dev-packages]
 faker = "*"
 huepy = "*"
-ipython = "*"
+bandit = "*"
+safety = "*"
 
 [packages]
 mysqlclient = "*"

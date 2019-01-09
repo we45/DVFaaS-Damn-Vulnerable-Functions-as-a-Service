@@ -80,6 +80,7 @@ Query OK, 0 rows affected (0.60 sec)
 
 ### Setup - Lambda Function
 * Goto `mqtt_rds_sql_event_injection\sqli\.chalice`
+* You have been given a `config-sample.json`, which gives you the structure for the `config.json`
 * Edit `config.json` to include the following:
 
 ```
