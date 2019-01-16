@@ -22,3 +22,4 @@ iam_privilege_escalation/bad-dynamo-search/.chalice/deployed/dev.json
 injection/mqtt_rds_sql_event_injection/read_file.py
 insecure_deserialization/insecure-deserialization/.chalice/deployed/dev.json
 xxe/xxe-example/.chalice/deployed/dev.json
+injection/mqtt_rds_sql_event_injection/sqli/.chalice/deployed/dev.json
