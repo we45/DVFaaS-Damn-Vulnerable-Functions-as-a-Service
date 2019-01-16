@@ -45,6 +45,8 @@ This project is not for you, if:
 ## Disclaimer
 **Please use in personal/non-production accounts only**
 We do not take responsibility for the way in which any one uses these functions (DVFaaS). We have made the purposes of the application clear and it should not be used maliciously. We have given warnings and taken measures to prevent users from installing DVFaaS on to production accounts.
+You are responsible for requisite authorizations (if any) that you will need to run this on your AWS account.
+
 
 ## Installation and Setup
 * Git clone the project `git clone <URL>`
