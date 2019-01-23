@@ -3,7 +3,7 @@
   "app_name": "dvfaas-insecure-deserialization",
   "stages": {
     "dev": {
-      "api_gateway_stage": "api",
+      "api_gateway_stage": "api"
     }
   }
 }
