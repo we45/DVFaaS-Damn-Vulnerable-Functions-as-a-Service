@@ -10,7 +10,6 @@ bandit = "*"
 safety = "*"
 
 [packages]
-mysqlclient = "*"
 pyyaml = "*"
 chalice = "*"
 "boto3" = "*"
